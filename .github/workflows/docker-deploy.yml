@@ -19,8 +19,6 @@ jobs:
           MYSQL_DATABASE: your_database
         ports:
           - 3306:3306
-        volumes:
-          - mysql-data:/var/lib/mysql
 
     steps:
       # 깃허브 저장소에서 소스 코드 가져옴
@@ -54,6 +52,3 @@ jobs:
         run: |
           docker build -t ${{ secrets.DOCKER_USERNAME }}/your-app:${{ github.sha }} .
           docker push ${{ secrets.DOCKER_USERNAME }}/your-app:${{ github.sha }}
-
-volumes:
-  mysql-data:

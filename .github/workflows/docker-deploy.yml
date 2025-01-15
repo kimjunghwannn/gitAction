@@ -32,26 +32,3 @@ jobs:
       - name: Build with Gradle
         run: ./gradlew clean build
 
-      - name: Log in to DockerHub
-        uses: docker/login-action@v2
-        with:
-          username: ${{ secrets.DOCKER_USERNAME }}
-          password: ${{ secrets.DOCKER_PASSWORD }}
-
-      - name: Build and Push Docker Image
-        run: |
-          docker build -t ${{ secrets.DOCKER_USERNAME }}/your-app:${{ github.sha }} .
-          docker push ${{ secrets.DOCKER_USERNAME }}/your-app:${{ github.sha }}
-
-        # 7. EC2 서버로 배포
-      - name: Deploy to EC2
-        uses: appleboy/ssh-action@v0.1.8
-        with:
-          host: ${{ secrets.EC2_HOST }}
-          username: ubuntu
-          key: ${{ secrets.EC2_SSH_KEY }}
-          script: |
-            docker pull ${{ secrets.DOCKER_USERNAME }}/your-app:${{ github.sha }}
-            docker stop my-app || true
-            docker rm my-app || true
-            docker run -d --name my-app -p 8080:8080 ${{ secrets.DOCKER_USERNAME }}/your-app:${{ github.sha }}

@@ -5,3 +5,15 @@ on:
     workflows: ["CI/CD Pipeline"]
     types:
       - completed
+
+jobs:
+  runs-on: ubuntu-latest
+
+  steps:
+
+    # 깃허브 저장소에서 소스 코드 가져옴
+    - name: Checkout Code
+      uses: actions/checkout@v3
+    # Java 17 환경 설정
+    - name: actions/setup-java@v3
+      uses: actions/setup-java@v3
